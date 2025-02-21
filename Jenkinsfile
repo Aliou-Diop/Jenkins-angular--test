@@ -18,7 +18,7 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        /*stage('Install Dependencies') {
             steps {
                 script {
                     def nodeHome = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
@@ -26,7 +26,7 @@ pipeline {
                 }
                 sh 'npm install'
             }
-        }
+        }*/
 
         stage('Build Angular') {
             steps {
