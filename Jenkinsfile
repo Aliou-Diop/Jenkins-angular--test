@@ -6,7 +6,7 @@ pipeline {
     }
 
     stages {
-         stage('Install Node.js') {
+        stage('Install Node.js') {
             steps {
                 sh 'npm version'
             }
@@ -14,7 +14,7 @@ pipeline {
 
         stage('Install Angular CLI') {
             steps {
-              sh 'npm install -g @angular/cli'
+              sh 'npm install -g @angular/cli@17'
             }
         }
 
@@ -26,21 +26,17 @@ pipeline {
             }
         }
 
-        stage('Checkout') {
+          stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/Aliou-Diop/Jenkins-angular--test.git'
             }
         }
 
-        /*stage('Install Dependencies') {
+        stage('Install Dependencies') {
             steps {
-                script {
-                    def nodeHome = tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-                    env.PATH = "${nodeHome}/bin:${env.PATH}"
-                }
                 sh 'npm install'
             }
-        }*/
+        }
 
         stage('Build Angular') {
             steps {
@@ -53,12 +49,7 @@ pipeline {
                 sh 'npx cypress run'
             }
         }
+
     }
 
-    post {
-        always {
-            archiveArtifacts artifacts: 'cypress/videos/**/*.mp4', fingerprint: true
-            junit 'cypress/results/*.xml'
-        }
-    }
 }
