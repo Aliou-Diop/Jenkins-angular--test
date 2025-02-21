@@ -22,11 +22,11 @@ pipeline {
             steps {
                 sh 'node -v'
                 sh 'npm -v'
-                sh 'npx ng version'
+                sh 'npx ng version' // Vérifie si Angular CLI est bien installé
             }
         }
 
-          stage('Checkout Code') {
+        stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/Aliou-Diop/Jenkins-angular--test.git'
             }
@@ -38,9 +38,15 @@ pipeline {
             }
         }
 
-        stage('Build Angular') {
+        /*stage('Build Angular') {
             steps {
                 sh 'npm run build'
+            }
+        }*/
+
+        stage('Install Xvfb (Virtual Display)') {
+            steps {
+                sh 'sudo apt-get update && sudo apt-get install -y xvfb' 
             }
         }
 
@@ -52,4 +58,10 @@ pipeline {
 
     }
 
+    post {
+        always {
+            archiveArtifacts artifacts: 'cypress/videos/**/*.mp4', fingerprint: true
+            junit 'cypress/results/*.xml'
+        }
+    }
 }
