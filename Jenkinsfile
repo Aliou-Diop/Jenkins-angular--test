@@ -12,6 +12,20 @@ pipeline {
             }
         }
 
+        stage('Install Angular CLI') {
+            steps {
+              sh 'npm install -g @angular/cli'
+            }
+        }
+
+        stage('Check Node & Angular CLI') {
+            steps {
+                sh 'node -v'
+                sh 'npm -v'
+                sh 'npx ng version'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/Aliou-Diop/Jenkins-angular--test.git'
